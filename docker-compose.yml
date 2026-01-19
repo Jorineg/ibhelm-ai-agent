@@ -1,0 +1,16 @@
+services:
+  ai-agent:
+    build: .
+    container_name: ibhelm-ai-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - TZ=Europe/Berlin
+    networks:
+      - ibhelm-network
+
+networks:
+  ibhelm-network:
+    external: true
+

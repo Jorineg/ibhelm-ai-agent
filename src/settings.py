@@ -18,7 +18,6 @@ class Settings(BaseSettings):
     
     # Missive
     missive_api_token: str
-    missive_organization_id: Optional[str] = None
     
     # Polling
     poll_interval_seconds: float = 1.0

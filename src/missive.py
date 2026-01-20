@@ -44,10 +44,6 @@ class MissiveClient:
             }
         }
         
-        # Add organization if configured
-        if settings.missive_organization_id:
-            payload["posts"]["organization"] = settings.missive_organization_id
-        
         try:
             with httpx.Client(timeout=30) as client:
                 response = client.post(

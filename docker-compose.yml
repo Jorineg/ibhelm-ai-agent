@@ -8,9 +8,9 @@ services:
     environment:
       - TZ=Europe/Berlin
     networks:
-      - ibhelm-network
+      - supabase_default
 
 networks:
-  ibhelm-network:
+  supabase_default:
     external: true
 

@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     # Logging
     log_level: str = "INFO"
     betterstack_source_token: Optional[str] = None
+    betterstack_ingest_host: Optional[str] = None
     
     class Config:
         env_file = ".env"

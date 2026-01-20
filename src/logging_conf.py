@@ -34,10 +34,14 @@ def setup_logging():
     if settings.betterstack_source_token:
         try:
             from logtail import LogtailHandler
-            logtail = LogtailHandler(source_token=settings.betterstack_source_token)
+            handler_kwargs = {"source_token": settings.betterstack_source_token}
+            if settings.betterstack_ingest_host:
+                handler_kwargs["host"] = settings.betterstack_ingest_host
+            logtail = LogtailHandler(**handler_kwargs)
             logtail.setLevel(level)
             logger.addHandler(logtail)
-            logger.info("BetterStack logging enabled")
+            host_info = settings.betterstack_ingest_host or "in.logs.betterstack.com"
+            logger.info(f"BetterStack logging enabled (host: {host_info})")
         except ImportError:
             logger.warning("logtail-python not installed, skipping BetterStack")
     

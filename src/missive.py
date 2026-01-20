@@ -55,7 +55,7 @@ class MissiveClient:
                 if response.status_code in (200, 201):
                     data = response.json()
                     post_id = data.get("posts", {}).get("id")
-                    logger.debug(f"Created post {post_id} in conversation {conversation_id}")
+                    logger.info(f"Posted to Missive: {post_id[:8]}... in conversation {conversation_id[:8]}...")
                     return post_id
                 else:
                     logger.error(f"Failed to create post: {response.status_code} - {response.text}")
@@ -80,7 +80,7 @@ class MissiveClient:
                 )
                 
                 if response.status_code in (200, 204):
-                    logger.debug(f"Deleted post {post_id}")
+                    logger.info(f"Deleted Missive post: {post_id[:8]}...")
                     return True
                 elif response.status_code == 404:
                     logger.warning(f"Post {post_id} not found (already deleted?)")

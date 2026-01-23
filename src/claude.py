@@ -72,20 +72,22 @@ def call_claude(system_prompt: str, user_message: str = "") -> str:
         logger.info(f"Response received - stop_reason: {response.stop_reason}")
         logger.info(f"Response content blocks: {len(response.content)}")
         
-        # Extract text from response, log all block types
-        result_text = ""
+        # Extract text blocks, use only the last one (earlier blocks are thinking/narration)
+        text_blocks = []
         for i, block in enumerate(response.content):
             block_type = type(block).__name__
             logger.debug(f"Block {i}: {block_type}")
             
             if hasattr(block, 'text'):
-                result_text += block.text
+                text_blocks.append(block.text)
             elif hasattr(block, 'type') and block.type == 'mcp_tool_use':
                 logger.debug(f"  MCP tool call: {getattr(block, 'name', 'unknown')}")
             elif hasattr(block, 'type') and block.type == 'mcp_tool_result':
                 logger.debug(f"  MCP tool result received")
         
-        logger.info(f"Claude response text ({len(result_text)} chars)")
+        # Use only the last text block (contains final answer)
+        result_text = text_blocks[-1] if text_blocks else ""
+        logger.info(f"Claude response: {len(text_blocks)} text blocks, using last ({len(result_text)} chars)")
         return result_text
         
     except anthropic.APIError as e:
